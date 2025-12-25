@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>圣诞快乐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* ===== 基础 ===== */
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #video1 {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== 祝福框 ===== */
+        .greeting-container {
+            position: fixed;
+            width: 320px;
+            height: 140px;
+            background: rgba(0, 0, 0, .7);
+            border: 2px solid rgba(255, 215, 0, .3);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, .2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            z-index: 100;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .greeting-text {
+            font-size: 24px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, .5);
+        }
+
+        .greeting-subtext {
+            font-size: 16px;
+            color: #ffd700;
+            font-style: italic;
+            opacity: .9;
+            line-height: 1.4;
+        }
+
+        /* 四角定位 */
+        .pos-1 { top: 15%; left: 20%; transform: translate(-50%, -50%); }
+        .pos-2 { top: 15%; left: 80%; transform: translate(-50%, -50%); }
+        .pos-3 { top: 85%; left: 20%; transform: translate(-50%, -50%); }
+        .pos-4 { top: 85%; left: 80%; transform: translate(-50%, -50%); }
+
+        /* ===== 雪花 ===== */
+        .snowflake {
+            position: fixed;
+            top: -30px;
+            color: #fff;
+            font-size: 20px;
+            opacity: .8;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(.9) translate(-50%, -50%); }
+            to   { opacity: 1; transform: scale(1)   translate(-50%, -50%); }
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ===== 移动端 ===== */
+        @media (max-width: 768px) {
+            .greeting-container {
+                width: 260px;
+                height: 120px;
+                padding: 15px;
+            }
+            .greeting-text  { font-size: 20px; }
+            .greeting-subtext { font-size: 14px; }
+        }
+    </style>
+</head>
+
+<body id="app">
+    <div id="main">
+        <video id="video1" muted autoplay loop>
+            <source src="./video/chrismas.mp4" type="video/mp4">
+        </video>
+
+        <!-- 4 个祝福框 -->
+        <div class="greeting-container pos-1">
+            <div class="greeting-text">🎅 愿你心想事成</div>
+            <div class="greeting-subtext">把烦恼都装进袜子<br>明天醒来全是惊喜</div>
+        </div>
+
+        <div class="greeting-container pos-2">
+            <div class="greeting-text">🎁 礼物已签收</div>
+            <div class="greeting-subtext">健康、快乐、暴富<br>统统打包送给你</div>
+        </div>
+
+        <div class="greeting-container pos-3">
+            <div class="greeting-text">🎄 圣诞快乐 🎄</div>
+            <div class="greeting-subtext">愿平安喜乐伴你左右<br>Merry Christmas & Happy New Year!</div>
+        </div>
+
+        <div class="greeting-container pos-4">
+            <div class="greeting-text">❄️ 雪夜童话</div>
+            <div class="greeting-subtext">愿你的每个梦<br>都像雪花一样轻、一样美</div>
+        </div>
+
+        <audio id="bgm" loop>
+            <source src="./music/jinniandongtianpeizhewoba.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+        /* 视频减速 */
+        const v = document.getElementById('video1');
+        v.playbackRate = 0.5;
+
+        /* 雪花 */
+        function snow() {
+            const f = document.createElement('div');
+            f.className = 'snowflake';
+            f.innerHTML = '❄';
+            f.style.left = Math.random() * 100 + 'vw';
+            f.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            f.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            document.body.appendChild(f);
+            setTimeout(() => f.remove(), 8000);
+        }
+        setInterval(snow, 300);
+
+        /* 音乐自动播放兼容 */
+        const bgm = document.getElementById('bgm');
+        function playMusic() {
+            if (bgm.paused) bgm.play().catch(() => {});
+        }
+        document.addEventListener('click', playMusic);
+        document.addEventListener('mousemove', playMusic);
+    </script>
+</body>
+</html>
